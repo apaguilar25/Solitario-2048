@@ -1,0 +1,475 @@
+/* Estilos globales - Solitario 2048
+ * Estética: arcade neón, magenta + verde oliva, tipografías chunky.
+ * Fuentes: Bagel Fat One (títulos), Rubik (cuerpo), Rubik Mono One (números).
+ */
+@import url("https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Rubik:wght@500;700;900&family=Rubik+Mono+One&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100%;
+  font-family: "Rubik", "Segoe UI", sans-serif;
+  font-weight: 500;
+  color: #fef4ea;
+}
+
+body {
+  /* Fondo sólido oscuro con halos magenta + oliva. Sin blanco -> no se ve "sucio". */
+  background-color: #14101a;
+  background-image:
+    radial-gradient(circle at 12% 10%, rgba(245, 171, 224, 0.35) 0%, transparent 40%),
+    radial-gradient(circle at 88% 92%, rgba(168, 67, 140, 0.45) 0%, transparent 45%),
+    radial-gradient(circle at 90% 12%, rgba(163, 184, 90, 0.28) 0%, transparent 38%),
+    radial-gradient(circle at 10% 88%, rgba(117, 23, 91, 0.55) 0%, transparent 45%);
+  background-attachment: fixed;
+  background-size: cover;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Rejilla neón sutil sobre el fondo */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(245, 171, 224, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(163, 184, 90, 0.05) 1px, transparent 1px);
+  background-size: 44px 44px;
+  z-index: 0;
+}
+
+/* Manchas neón flotantes decorativas */
+body::after {
+  content: "";
+  position: fixed;
+  top: -80px;
+  right: -80px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(245, 171, 224, 0.35), transparent 70%);
+  filter: blur(30px);
+  pointer-events: none;
+  animation: flotar 9s ease-in-out infinite;
+  z-index: 0;
+}
+
+body > * { position: relative; z-index: 1; }
+
+@keyframes flotar {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-40px, 30px) scale(1.15); }
+}
+
+a { color: inherit; text-decoration: none; }
+
+.acento {
+  color: #f5abe0;
+  text-shadow:
+    0 0 12px rgba(245, 171, 224, 0.9),
+    0 0 28px rgba(245, 171, 224, 0.55),
+    0 0 48px rgba(168, 67, 140, 0.5);
+}
+
+.acento-oliva {
+  color: #c4d768;
+  text-shadow:
+    0 0 12px rgba(196, 215, 104, 0.85),
+    0 0 26px rgba(163, 184, 90, 0.5);
+}
+
+/* ---------- Página de inicio ---------- */
+.contenedor-inicio {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  gap: 6px;
+}
+
+.badge-arcade {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Rubik", sans-serif;
+  font-weight: 900;
+  letter-spacing: 4px;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  color: #14101a;
+  background: linear-gradient(135deg, #c4d768, #a3b85a);
+  border: 3px solid #14101a;
+  box-shadow:
+    0 0 0 3px #c4d768,
+    0 8px 0 rgba(0, 0, 0, 0.35),
+    0 0 30px rgba(196, 215, 104, 0.55);
+  animation: rebotar 2.4s ease-in-out infinite;
+  margin-bottom: 22px;
+}
+
+.badge-arcade::before,
+.badge-arcade::after { content: "★"; }
+
+@keyframes rebotar {
+  0%, 100% { transform: translateY(0) rotate(-1.5deg); }
+  50%      { transform: translateY(-6px) rotate(1.5deg); }
+}
+
+.titulo-principal {
+  font-family: "Bagel Fat One", "Arial Black", sans-serif;
+  font-weight: 400;
+  font-size: clamp(3.4rem, 10vw, 6.5rem);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  line-height: 0.95;
+  color: #fef4ea;
+  text-shadow:
+    -2px 0 0 #14101a,
+    2px 0 0 #14101a,
+    0 -2px 0 #14101a,
+    0 2px 0 #14101a,
+    0 4px 0 #75175b,
+    0 8px 0 #42002f,
+    0 12px 24px rgba(0, 0, 0, 0.6),
+    0 0 50px rgba(245, 171, 224, 0.35);
+  animation: entradaTitulo 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes entradaTitulo {
+  0%   { transform: scale(0.4) rotate(-8deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.subtitulo {
+  margin-top: 18px;
+  font-size: 1.05rem;
+  color: #f5e9dc;
+  letter-spacing: 1px;
+  font-weight: 700;
+  max-width: 500px;
+  line-height: 1.5;
+  animation: aparecerSub 1s ease-out 0.3s both;
+}
+
+@keyframes aparecerSub {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.tarjetas-menu {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 22px;
+  width: 100%;
+  max-width: 620px;
+  animation: aparecerSub 1s ease-out 0.5s both;
+}
+
+.tarjeta-menu {
+  position: relative;
+  background: linear-gradient(160deg, rgba(245, 171, 224, 0.15), rgba(117, 23, 91, 0.35));
+  border: 3px solid #f5abe0;
+  padding: 30px 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow:
+    0 0 0 3px #14101a,
+    0 8px 0 #75175b,
+    0 14px 30px rgba(0, 0, 0, 0.5),
+    inset 0 0 30px rgba(245, 171, 224, 0.15);
+  overflow: hidden;
+}
+
+.tarjeta-menu.tarjeta-info {
+  border-color: #c4d768;
+  background: linear-gradient(160deg, rgba(196, 215, 104, 0.18), rgba(95, 107, 47, 0.4));
+  box-shadow:
+    0 0 0 3px #14101a,
+    0 8px 0 #5f6b2f,
+    0 14px 30px rgba(0, 0, 0, 0.5),
+    inset 0 0 30px rgba(196, 215, 104, 0.15);
+}
+
+.tarjeta-menu::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+
+.tarjeta-menu:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow:
+    0 0 0 3px #14101a,
+    0 14px 0 #75175b,
+    0 22px 40px rgba(245, 171, 224, 0.4),
+    inset 0 0 30px rgba(245, 171, 224, 0.3);
+}
+
+.tarjeta-menu.tarjeta-info:hover {
+  box-shadow:
+    0 0 0 3px #14101a,
+    0 14px 0 #5f6b2f,
+    0 22px 40px rgba(196, 215, 104, 0.4),
+    inset 0 0 30px rgba(196, 215, 104, 0.3);
+}
+
+.tarjeta-menu:hover::after { left: 130%; }
+
+.tarjeta-icono {
+  font-family: "Bagel Fat One", sans-serif;
+  font-size: 2.8rem;
+  color: #fef4ea;
+  filter: drop-shadow(0 3px 0 #42002f) drop-shadow(0 0 12px rgba(245, 171, 224, 0.7));
+  animation: latido 1.8s ease-in-out infinite;
+}
+
+.tarjeta-menu.tarjeta-info .tarjeta-icono {
+  filter: drop-shadow(0 3px 0 #3d4620) drop-shadow(0 0 12px rgba(196, 215, 104, 0.7));
+}
+
+@keyframes latido {
+  0%, 100% { transform: scale(1); }
+  50%      { transform: scale(1.15); }
+}
+
+.tarjeta-titulo {
+  font-family: "Bagel Fat One", sans-serif;
+  font-weight: 400;
+  font-size: 1.6rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fef4ea;
+  text-shadow: 0 3px 0 #42002f, 0 0 18px rgba(245, 171, 224, 0.5);
+}
+
+.tarjeta-menu.tarjeta-info .tarjeta-titulo {
+  text-shadow: 0 3px 0 #3d4620, 0 0 18px rgba(196, 215, 104, 0.5);
+}
+
+.tarjeta-desc {
+  font-size: 0.92rem;
+  color: #fef4ea;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.pie-inicio {
+  margin-top: 54px;
+  font-size: 0.82rem;
+  color: #c9bfa6;
+  text-align: center;
+  line-height: 1.7;
+  letter-spacing: 1px;
+  font-weight: 700;
+  animation: aparecerSub 1s ease-out 0.7s both;
+}
+
+.pie-inicio .autora {
+  font-family: "Bagel Fat One", sans-serif;
+  color: #f5abe0;
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  text-shadow: 0 0 14px rgba(245, 171, 224, 0.6);
+}
+
+/* ---------- Barra superior compartida ---------- */
+.barra-superior {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  padding: 14px 22px;
+  background: linear-gradient(180deg, rgba(66, 0, 47, 0.85), rgba(20, 16, 26, 0.7));
+  border-bottom: 3px solid #f5abe0;
+  box-shadow: 0 0 24px rgba(245, 171, 224, 0.35);
+  backdrop-filter: blur(8px);
+}
+
+.barra-superior > .boton-volver { justify-self: start; }
+.barra-superior > .logo-juego { justify-self: center; text-align: center; }
+.barra-superior > .boton-ayuda,
+.barra-superior > .barra-superior-espaciador { justify-self: end; }
+.barra-superior-espaciador { display: inline-block; width: 44px; height: 44px; }
+
+.logo-juego {
+  font-family: "Bagel Fat One", sans-serif;
+  font-weight: 400;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #fef4ea;
+  text-shadow: 0 3px 0 #42002f, 0 0 18px rgba(245, 171, 224, 0.6);
+}
+
+.boton-volver,
+.boton-ayuda {
+  background: linear-gradient(180deg, #f5abe0, #c261a6);
+  border: 3px solid #14101a;
+  color: #14101a;
+  padding: 10px 16px;
+  font-family: "Rubik", sans-serif;
+  font-size: 0.85rem;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 4px 0 #75175b, 0 0 16px rgba(245, 171, 224, 0.5);
+  border-radius: 10px;
+}
+
+.boton-ayuda {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Bagel Fat One", sans-serif;
+  font-size: 1.3rem;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #c4d768, #a3b85a);
+  box-shadow: 0 4px 0 #5f6b2f, 0 0 16px rgba(196, 215, 104, 0.55);
+  animation: latido 2.4s ease-in-out infinite;
+}
+
+.boton-volver:hover,
+.boton-ayuda:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 0 #75175b, 0 0 22px rgba(245, 171, 224, 0.75);
+}
+
+.boton-ayuda:hover {
+  box-shadow: 0 6px 0 #5f6b2f, 0 0 22px rgba(196, 215, 104, 0.85);
+}
+
+.boton-volver:active,
+.boton-ayuda:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #75175b;
+}
+
+/* ---------- Instrucciones ---------- */
+.contenedor-instrucciones {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 36px 24px 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.bloque-instruccion {
+  background: linear-gradient(160deg, rgba(66, 0, 47, 0.55), rgba(30, 20, 40, 0.7));
+  border: 3px solid #f5abe0;
+  border-radius: 18px;
+  padding: 22px 26px;
+  box-shadow:
+    0 0 0 3px #14101a,
+    0 6px 0 #75175b,
+    0 12px 24px rgba(0, 0, 0, 0.45),
+    inset 0 0 24px rgba(245, 171, 224, 0.08);
+  animation: aparecerSub 0.6s ease-out both;
+}
+
+.bloque-instruccion:nth-child(2) { animation-delay: 0.05s; border-color: #c4d768; box-shadow: 0 0 0 3px #14101a, 0 6px 0 #5f6b2f, 0 12px 24px rgba(0,0,0,0.45), inset 0 0 24px rgba(196, 215, 104, 0.08); }
+.bloque-instruccion:nth-child(3) { animation-delay: 0.12s; }
+.bloque-instruccion:nth-child(4) { animation-delay: 0.19s; border-color: #c4d768; box-shadow: 0 0 0 3px #14101a, 0 6px 0 #5f6b2f, 0 12px 24px rgba(0,0,0,0.45), inset 0 0 24px rgba(196, 215, 104, 0.08); }
+
+.bloque-instruccion h2 {
+  font-family: "Bagel Fat One", sans-serif;
+  font-weight: 400;
+  color: #fef4ea;
+  margin-bottom: 12px;
+  font-size: 1.4rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-shadow: 0 2px 0 #42002f, 0 0 14px rgba(245, 171, 224, 0.55);
+}
+
+.bloque-instruccion:nth-child(2) h2,
+.bloque-instruccion:nth-child(4) h2 {
+  text-shadow: 0 2px 0 #3d4620, 0 0 14px rgba(196, 215, 104, 0.55);
+}
+
+.bloque-instruccion p,
+.bloque-instruccion li {
+  color: #fef4ea;
+  line-height: 1.65;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.bloque-instruccion strong { color: #f5abe0; font-weight: 900; }
+.bloque-instruccion:nth-child(2) strong,
+.bloque-instruccion:nth-child(4) strong { color: #c4d768; }
+
+.bloque-instruccion ol,
+.bloque-instruccion ul {
+  padding-left: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.acciones-instrucciones {
+  display: flex;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+.boton-primario {
+  background: linear-gradient(180deg, #f5abe0, #a8438c);
+  color: #fef4ea;
+  padding: 16px 34px;
+  font-family: "Bagel Fat One", sans-serif;
+  font-weight: 400;
+  font-size: 1.05rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border: 3px solid #14101a;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow:
+    0 6px 0 #5c0944,
+    0 12px 28px rgba(168, 67, 140, 0.55),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.25);
+  text-shadow: 0 2px 0 #42002f;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.boton-primario:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 9px 0 #5c0944,
+    0 16px 32px rgba(245, 171, 224, 0.7),
+    inset 0 -3px 0 rgba(0, 0, 0, 0.25);
+}
+
+.boton-primario:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #5c0944, inset 0 -3px 0 rgba(0, 0, 0, 0.25);
+}

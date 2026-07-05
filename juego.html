@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solitario 2048 - Jugar</title>
+  <link rel="stylesheet" href="/css/estilos.css" />
+  <link rel="stylesheet" href="/css/juego.css" />
+</head>
+<body class="pagina-juego">
+  <header class="barra-superior">
+    <a href="/inicio.html" class="boton-volver">← Menú</a>
+    <h1 class="logo-juego">Solitario <span class="acento">2048</span></h1>
+    <a href="/instrucciones.html?desde=juego" class="boton-ayuda" title="Cómo jugar">?</a>
+  </header>
+
+  <main class="contenedor-juego">
+    <section class="panel-info">
+      <div class="marcador">
+        <span class="marcador-etiqueta">Puntos</span>
+        <span class="marcador-valor" id="puntos">0</span>
+      </div>
+      <div class="marcador">
+        <span class="marcador-etiqueta">Récord</span>
+        <span class="marcador-valor" id="mejor">0</span>
+      </div>
+      <div class="mazo">
+        <span class="marcador-etiqueta">Próxima carta</span>
+        <div class="carta-mazo" id="cartaActual">2</div>
+      </div>
+      <button class="boton-reiniciar" id="botonReiniciar">↻ Nueva partida</button>
+    </section>
+
+    <section class="zona-juego" id="zonaJuego">
+      <!-- Las 4 columnas se generan por JS -->
+    </section>
+  </main>
+
+  <div class="modal-overlay oculto" id="modalFin">
+    <div class="modal">
+      <h2 id="modalTitulo">¡Fin de la partida!</h2>
+      <p id="modalMensaje">Tu columna se desbordó.</p>
+      <p class="modal-puntos">Puntaje final: <span id="modalPuntos">0</span></p>
+      <button class="boton-reiniciar" id="botonModalReiniciar">↻ Jugar otra vez</button>
+    </div>
+  </div>
+
+  <script src="/js/juego.js"></script>
+</body>
+</html>

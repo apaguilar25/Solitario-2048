@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Solitario 2048 - Cómo jugar</title>
+  <link rel="stylesheet" href="/css/estilos.css" />
+</head>
+<body class="pagina-instrucciones">
+  <header class="barra-superior">
+    <a href="#" id="botonVolver" class="boton-volver">← Volver</a>
+    <h1 class="logo-juego">Cómo jugar</h1>
+    <span class="barra-superior-espaciador"></span>
+  </header>
+
+  <main class="contenedor-instrucciones">
+    <section class="bloque-instruccion">
+      <h2>🎯 Objetivo</h2>
+      <p>Fusiona cartas iguales en las 4 columnas y llega hasta la mítica <strong>2048</strong>. ¡Pero cuidado! Si una columna se desborda, la partida termina.</p>
+    </section>
+
+    <section class="bloque-instruccion">
+      <h2>🃏 Cómo se juega</h2>
+      <ol>
+        <li>Recibes <strong>una carta a la vez</strong> desde el mazo (valores 2, 4, 8, 16 o 32).</li>
+        <li>Elige una de las 4 columnas y haz clic para <strong>soltar</strong> tu carta.</li>
+        <li>Las cartas <strong>caen desde arriba</strong> y se apilan sobre el suelo de la columna.</li>
+        <li>Si la carta cae sobre otra del mismo valor, ambas se <strong>fusionan</strong> (2 + 2 = 4).</li>
+        <li>Si el resultado coincide con la carta que queda debajo, se desata una <strong>¡reacción en cadena!</strong> 🔥</li>
+      </ol>
+    </section>
+
+    <section class="bloque-instruccion">
+      <h2>⚡ Reglas especiales</h2>
+      <ul>
+        <li><strong>Límite:</strong> cada columna aguanta hasta 8 cartas. Si todas se llenan, pierdes.</li>
+        <li><strong>Poder 2048:</strong> al crear una carta 2048 se limpia toda la columna. ✨</li>
+        <li><strong>Puntos:</strong> cada fusión te da puntos igual al nuevo valor generado.</li>
+        <li><strong>Récord:</strong> tu mejor puntaje se guarda automáticamente.</li>
+      </ul>
+    </section>
+
+    <section class="bloque-instruccion">
+      <h2>💡 Consejo</h2>
+      <p>Trata de <strong>ordenar tus columnas de mayor a menor</strong> (las más grandes al fondo) para encadenar fusiones épicas cuando lleguen cartas altas.</p>
+    </section>
+
+    <div class="acciones-instrucciones">
+      <button class="boton-primario" id="botonRegresar">← Regresar</button>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      const params = new URLSearchParams(window.location.search);
+      const desdeJuego = params.get("desde") === "juego";
+      // El estado del juego se guarda en localStorage, así que /juego.html
+      // siempre restaura la partida al entrar.
+      const destino = desdeJuego ? "/juego.html" : "/inicio.html";
+
+      const btnTop = document.getElementById("botonVolver");
+      const btnBottom = document.getElementById("botonRegresar");
+
+      function volver(e) {
+        e.preventDefault();
+        window.location.href = destino;
+      }
+
+      btnTop.textContent = desdeJuego ? "← Volver al juego" : "← Menú";
+      btnBottom.textContent = desdeJuego ? "← Volver al juego" : "← Ir al menú";
+
+      btnTop.addEventListener("click", volver);
+      btnBottom.addEventListener("click", volver);
+    })();
+  </script>
+</body>
+</html>

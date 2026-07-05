@@ -1,0 +1,449 @@
+/* Estilos específicos del juego - neón magenta + oliva, arcade chunky */
+
+.contenedor-juego {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 22px;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 22px;
+  animation: aparecerJuego 0.5s ease-out;
+}
+
+@keyframes aparecerJuego {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 780px) {
+  .contenedor-juego { grid-template-columns: 1fr; }
+}
+
+/* Panel lateral */
+.panel-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  background: linear-gradient(160deg, rgba(66, 0, 47, 0.7), rgba(30, 20, 40, 0.85));
+  border: 3px solid #f5abe0;
+  border-radius: 18px;
+  padding: 20px;
+  height: fit-content;
+  box-shadow:
+    0 0 0 3px #14101a,
+    0 8px 0 #75175b,
+    0 14px 30px rgba(0, 0, 0, 0.55),
+    inset 0 0 30px rgba(245, 171, 224, 0.1);
+}
+
+.marcador {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: linear-gradient(180deg, rgba(20, 16, 26, 0.85), rgba(66, 0, 47, 0.55));
+  border: 2.5px solid #c4d768;
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: inset 0 0 18px rgba(196, 215, 104, 0.15), 0 3px 0 #5f6b2f;
+}
+
+.marcador-etiqueta {
+  font-family: "Bagel Fat One", sans-serif;
+  font-weight: 400;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: #c4d768;
+  text-shadow: 0 0 12px rgba(196, 215, 104, 0.6);
+}
+
+.marcador-valor {
+  font-family: "Rubik Mono One", "JetBrains Mono", monospace;
+  font-size: 2rem;
+  color: #fef4ea;
+  text-shadow: 0 0 14px rgba(245, 171, 224, 0.7), 0 2px 0 #42002f;
+}
+
+.mazo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 3px dashed rgba(196, 215, 104, 0.5);
+}
+
+.mazo .marcador-etiqueta { color: #f5abe0; text-shadow: 0 0 12px rgba(245, 171, 224, 0.7); }
+
+.carta-mazo {
+  width: 100px;
+  height: 132px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Rubik Mono One", monospace;
+  font-size: 1.9rem;
+  color: #42002f;
+  box-shadow:
+    inset 0 -6px 0 rgba(0, 0, 0, 0.22),
+    inset 0 3px 0 rgba(255, 255, 255, 0.45),
+    0 8px 0 rgba(66, 0, 47, 0.55),
+    0 14px 30px rgba(0, 0, 0, 0.6),
+    0 0 26px rgba(245, 171, 224, 0.5);
+  border: 3px solid #14101a;
+  border-radius: 14px;
+  animation: latidoMazo 2s ease-in-out infinite;
+}
+
+@keyframes latidoMazo {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-4px) rotate(2deg); }
+}
+
+.boton-reiniciar {
+  background: linear-gradient(180deg, #c4d768, #7a8c3a);
+  color: #fef4ea;
+  border: 3px solid #14101a;
+  padding: 14px;
+  font-family: "Bagel Fat One", sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 12px;
+  box-shadow: 0 5px 0 #5f6b2f, 0 0 22px rgba(196, 215, 104, 0.5);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  text-shadow: 0 2px 0 #3d4620, 0 0 12px rgba(245, 171, 224, 0.5);
+}
+
+.boton-reiniciar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 0 #5f6b2f, 0 0 28px rgba(196, 215, 104, 0.75);
+}
+
+.boton-reiniciar:active { transform: translateY(3px); box-shadow: 0 2px 0 #5f6b2f; }
+
+/* Zona de columnas */
+.zona-juego {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  background: linear-gradient(160deg, rgba(20, 16, 26, 0.85), rgba(66, 0, 47, 0.4));
+  border: 3px solid #f5abe0;
+  border-radius: 20px;
+  padding: 16px;
+  min-height: 580px;
+  box-shadow:
+    0 0 0 3px #14101a,
+    0 10px 0 #75175b,
+    0 20px 40px rgba(0, 0, 0, 0.55),
+    inset 0 0 40px rgba(245, 171, 224, 0.08);
+}
+
+/* Columna: cartas entran por arriba, se apilan hacia abajo. */
+.columna {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 6px;
+  background:
+    linear-gradient(to bottom, rgba(245, 171, 224, 0.08), rgba(20, 16, 26, 0.4));
+  border: 2.5px solid rgba(245, 171, 224, 0.35);
+  border-top: 4px solid #f5abe0;
+  border-bottom: 6px solid #c4d768;
+  border-radius: 12px;
+  padding: 28px 8px 12px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  min-height: 100%;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    inset 0 4px 12px rgba(245, 171, 224, 0.15),
+    inset 0 -8px 18px rgba(196, 215, 104, 0.12);
+}
+
+.columna:hover {
+  background: linear-gradient(to bottom, rgba(245, 171, 224, 0.18), rgba(20, 16, 26, 0.4));
+  border-color: #f5abe0;
+  transform: translateY(-2px);
+}
+
+.columna.peligro {
+  border-color: #db84c2;
+  border-bottom-color: #ff6b9d;
+  background: linear-gradient(to bottom, rgba(245, 171, 224, 0.1), rgba(219, 132, 194, 0.35));
+  animation: parpadeoPeligro 0.9s ease-in-out infinite;
+}
+
+@keyframes parpadeoPeligro {
+  0%, 100% { box-shadow: inset 0 -40px 50px -10px rgba(219, 132, 194, 0.3), 0 0 20px rgba(219, 132, 194, 0.5); }
+  50%      { box-shadow: inset 0 -40px 50px -10px rgba(255, 107, 157, 0.75), 0 0 40px rgba(255, 107, 157, 0.85); }
+}
+
+/* Shake cuando intentas soltar en columna llena */
+.columna.shake {
+  animation: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-3px); }
+  20%, 80% { transform: translateX(5px); }
+  30%, 50%, 70% { transform: translateX(-7px); }
+  40%, 60% { transform: translateX(7px); }
+}
+
+/* Toast "¡Columna llena!" */
+.toast-llena {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 18px 34px;
+  background: rgba(66, 0, 47, 0.9);
+  border: 3px solid rgba(255, 107, 157, 0.9);
+  color: #fef4ea;
+  font-family: "Bagel Fat One", sans-serif;
+  font-size: 1.4rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  border-radius: 16px;
+  backdrop-filter: blur(6px);
+  text-shadow: 0 0 14px rgba(255, 107, 157, 0.95);
+  box-shadow: 0 0 40px rgba(255, 107, 157, 0.7), 0 12px 30px rgba(0,0,0,0.55);
+  pointer-events: none;
+  white-space: nowrap;
+  animation: toastCentro 1.4s ease-out forwards;
+  z-index: 200;
+}
+
+@keyframes toastCentro {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.6); }
+  15%  { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+  25%  { transform: translate(-50%, -50%) scale(1); }
+  80%  { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0.95); }
+}
+
+/* Animación cuando cambia la próxima carta del mazo */
+.carta-mazo.cambio {
+  animation: cambioMazo 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes cambioMazo {
+  0%   { transform: translateY(-40px) rotate(-14deg) scale(0.6); opacity: 0; filter: brightness(2); }
+  50%  { transform: translateY(6px) rotate(6deg) scale(1.15); opacity: 1; filter: brightness(1.4); }
+  100% { transform: translateY(0) rotate(-2deg) scale(1); opacity: 1; filter: brightness(1); }
+}
+
+.columna-indice {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-family: "Rubik Mono One", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 1px;
+  color: #14101a;
+  background: #c4d768;
+  padding: 3px 7px;
+  border-radius: 6px;
+  border: 2px solid #14101a;
+  box-shadow: 0 0 10px rgba(196, 215, 104, 0.6);
+}
+
+.flecha-caida {
+  position: absolute;
+  top: 4px;
+  left: 8px;
+  font-size: 1.1rem;
+  color: #f5abe0;
+  text-shadow: 0 0 12px rgba(245, 171, 224, 0.9);
+  animation: flecha 1.2s ease-in-out infinite;
+}
+
+@keyframes flecha {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50%      { transform: translateY(6px); opacity: 1; }
+}
+
+/* Cartas dentro de columnas */
+.carta {
+  width: 100%;
+  max-width: 118px;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Rubik Mono One", monospace;
+  font-size: 1.4rem;
+  color: #42002f;
+  border: 3px solid #14101a;
+  border-radius: 10px;
+  box-shadow:
+    inset 0 -4px 0 rgba(0, 0, 0, 0.18),
+    inset 0 3px 0 rgba(255, 255, 255, 0.4),
+    0 4px 0 rgba(0, 0, 0, 0.35),
+    0 6px 14px rgba(0, 0, 0, 0.45);
+  position: relative;
+  flex-shrink: 0;
+  transition: box-shadow 0.2s ease;
+}
+
+.carta.nueva { animation: entradaArriba 0.28s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.carta.desliza { animation: desplazamiento 0.28s cubic-bezier(0.4, 0, 0.5, 1); }
+
+/* Animación de la carta que cae encima justo antes de fusionarse */
+.carta.fusion-caer {
+  animation: fusionCaer 0.32s ease-in forwards;
+  z-index: 3;
+}
+
+/* La carta que va a recibir el impacto */
+.carta.fusion-recibir {
+  animation: fusionRecibir 0.32s ease-out;
+  z-index: 2;
+}
+
+/* Carta resultante brillando */
+.carta.fusion-resultado {
+  animation: fusionResultado 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes entradaArriba {
+  0%   { transform: translateY(-80px); opacity: 0; }
+  70%  { transform: translateY(6px);   opacity: 1; }
+  100% { transform: translateY(0); }
+}
+
+@keyframes desplazamiento {
+  0%   { transform: translateY(-64px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes fusionCaer {
+  0%   { transform: translateY(0) scale(1); }
+  100% { transform: translateY(28px) scale(0.85); opacity: 0.4; }
+}
+
+@keyframes fusionRecibir {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+@keyframes fusionResultado {
+  0%   { transform: scale(0.7); filter: brightness(2.5) saturate(1.8); box-shadow: 0 0 40px currentColor; }
+  40%  { transform: scale(1.25); filter: brightness(1.8); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+/* ---------- PALETA DE CARTAS (magenta) ---------- */
+.carta[data-valor="2"],
+.carta-mazo[data-valor="2"]    { background: #ffffff; }
+.carta[data-valor="4"],
+.carta-mazo[data-valor="4"]    { background: #ffe5f8; }
+.carta[data-valor="8"],
+.carta-mazo[data-valor="8"]    { background: #ffccf1; }
+.carta[data-valor="16"],
+.carta-mazo[data-valor="16"]   { background: #f5abe0; }
+.carta[data-valor="32"],
+.carta-mazo[data-valor="32"]   { background: #db84c2; }
+.carta[data-valor="64"],
+.carta-mazo[data-valor="64"]   { background: #c261a6; color: #fef4ea; }
+.carta[data-valor="128"],
+.carta-mazo[data-valor="128"]  { background: #a8438c; color: #fef4ea; font-size: 1.25rem; }
+.carta[data-valor="256"],
+.carta-mazo[data-valor="256"]  { background: #8f2b72; color: #fef4ea; font-size: 1.25rem; }
+.carta[data-valor="512"],
+.carta-mazo[data-valor="512"]  { background: #75175b; color: #ffe5f8; font-size: 1.2rem; }
+.carta[data-valor="1024"],
+.carta-mazo[data-valor="1024"] { background: #5c0944; color: #ffe5f8; font-size: 1.05rem; }
+.carta[data-valor="2048"],
+.carta-mazo[data-valor="2048"] {
+  background: #42002f;
+  color: #ffe5f8;
+  font-size: 1.05rem;
+  box-shadow:
+    inset 0 -4px 0 rgba(0, 0, 0, 0.35),
+    inset 0 3px 0 rgba(255, 255, 255, 0.2),
+    0 0 34px rgba(245, 171, 224, 0.95),
+    0 0 60px rgba(245, 171, 224, 0.6);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 10, 25, 0.8);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: aparecer 0.25s ease;
+}
+
+.modal-overlay.oculto { display: none; }
+
+.modal {
+  background: linear-gradient(160deg, #42002f, #14101a);
+  border: 4px solid #f5abe0;
+  border-radius: 22px;
+  padding: 36px 42px;
+  text-align: center;
+  max-width: 440px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow:
+    0 0 0 4px #14101a,
+    0 12px 0 #75175b,
+    0 30px 70px rgba(66, 0, 47, 0.85),
+    inset 0 0 40px rgba(245, 171, 224, 0.15);
+  animation: entradaModal 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes entradaModal {
+  0%   { transform: scale(0.6) rotate(-4deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+.modal h2 {
+  font-family: "Bagel Fat One", sans-serif;
+  font-weight: 400;
+  font-size: 1.9rem;
+  color: #fef4ea;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-shadow: 0 3px 0 #42002f, 0 0 22px rgba(245, 171, 224, 0.7);
+}
+
+.modal p { color: #fef4ea; font-weight: 700; font-size: 1rem; }
+
+.modal-puntos {
+  font-size: 1.1rem;
+  color: #c4d768;
+  margin-bottom: 8px;
+  font-family: "Bagel Fat One", sans-serif;
+  font-weight: 400;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-shadow: 0 0 14px rgba(196, 215, 104, 0.6);
+}
+
+.modal-puntos span {
+  font-family: "Rubik Mono One", monospace;
+  color: #fef4ea;
+  font-size: 1.8rem;
+  margin-left: 6px;
+  text-shadow: 0 0 16px rgba(245, 171, 224, 0.8);
+}
+
+@keyframes aparecer {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
