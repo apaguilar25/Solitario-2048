@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Solitario 2048 - Cómo jugar</title>
-  <link rel="stylesheet" href="/css/estilos.css" />
+  <link rel="stylesheet" href="css/estilos.css" />
 </head>
 <body class="pagina-instrucciones">
   <header class="barra-superior">
@@ -56,7 +56,7 @@
       const desdeJuego = params.get("desde") === "juego";
       // El estado del juego se guarda en localStorage, así que /juego.html
       // siempre restaura la partida al entrar.
-      const destino = desdeJuego ? "/juego.html" : "/inicio.html";
+      const destino = desdeJuego ? "juego.html" : "inicio.html";
 
       const btnTop = document.getElementById("botonVolver");
       const btnBottom = document.getElementById("botonRegresar");
